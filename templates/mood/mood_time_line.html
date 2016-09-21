@@ -1,0 +1,43 @@
+{% extends 'website/frontend/frontend_base.html' %} {% load static %} {% block title %} 新鲜事 {% endblock %} {% block external_header %}
+<script type="text/javascript" src="{% static 'js/timeline.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/timeline.css' %}">
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"> {% endblock %} {% block left %}
+<div class="col-md-12 article">
+	<meta charset="utf-8">
+	<h2 class="text-primary">新鲜事</h2>
+	<p class="text-info">&emsp;&emsp;在这里我会发一些最近的新鲜事，比如什么有趣的微博啦，最近新出的游戏啦，某某明星又怎么样了什么的。也会顺便吐槽一下最近的生活。</p>
+</div>
+<div class="col-md-12 timelinebox">
+	<div class="timeline animated">
+		{% for mood in mood_list %}
+		<div class="timeline-row">
+			<div class="timeline-time"><small>{{ mood.create_time|date:"Y-m-d" }}</small>{{ mood.create_time|time:"H:i:s" }}</div>
+			<div class="timeline-icon">
+				{% if mood.mood_type == 'T' %}
+				<div class="bg-primary"><i class="fa fa-pencil"></i></div>
+				{% elif mood.mood_type == 'B' %}
+				<div class="bg-warning"><i class="fa fa-quote-right"></i></div>
+				{% elif mood.mood_type == 'I' %}
+				<div class="bg-info"><i class="fa fa-camera"></i></div>
+				{% endif %}
+			</div>
+			<div class="panel timeline-content">
+				<div class="panel-body">
+					{% if mood.title %}
+					<h2>{{ mood.title }}</h2> {% endif %} {% if mood.mood_type == 'B' %}
+					<blockquote>
+						<p>{{ mood.content }}</p>
+					</blockquote>
+					{% elif mood.mood_type == 'I' %}
+					<img class="img-responsive" src="{% get_media_prefix%}{{ mood.image }}" />
+					<p>{{ mood.content }}</p>
+					{% else %}
+					<p>{{ mood.content }}</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}
